@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video - Face Mask Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1><i class="fas fa-video"></i> Video Analysis</h1>
+
+        {% if uploaded_video %}
+        <div class="result-container">
+            <h2><i class="fas fa-check-circle"></i> Complete</h2>
+            <div class="video-container">
+                <video width="100%" controls autoplay>
+                    <source src="{{ url_for('uploaded_file', filename=uploaded_video) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <br><br>
+            <a href="/upload_video" class="btn">
+                <i class="fas fa-redo"></i> Process Another
+            </a>
+        </div>
+
+        {% elif processing_filename %}
+        <div class="processing-container">
+            <h2><i class="fas fa-cog fa-spin"></i> Processing...</h2>
+            <p>Analyzing frames. Please do not close this window.</p>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar">0%</div>
+            </div>
+            <br>
+            <input type="hidden" id="filename" value="{{ processing_filename }}">
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                var filename = $('#filename').val();
+                var checkProgress = setInterval(function () {
+                    $.getJSON('/progress/' + filename, function (data) {
+                        var progress = data.progress;
+                        $('#progress-bar').css('width', progress + '%').text(progress + '%');
+
+                        if (progress >= 100) {
+                            clearInterval(checkProgress);
+                            setTimeout(function () {
+                                window.location.href = "/result_video/" + filename;
+                            }, 1000);
+                        } else if (progress == -1) {
+                            clearInterval(checkProgress);
+                            alert("An error occurred during processing.");
+                        }
+                    });
+                }, 1000);
+            });
+        </script>
+
+        {% else %}
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i> Processing time depends on video duration and GPU availability.
+        </div>
+        <form method="post" enctype="multipart/form-data" class="upload-form">
+            <div style="width: 100%;">
+                <input type="file" name="file" accept=".mp4, .avi, .mov" required>
+            </div>
+            <button type="submit" class="btn">
+                <i class="fas fa-file-video"></i> Upload & Process
+            </button>
+        </form>
+        {% endif %}
+
+        <br>
+        <a href="/" class="btn back-btn">
+            <i class="fas fa-arrow-left"></i> Home
+        </a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Metrics - Face Mask Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container" style="max-width: 1000px;">
+        <h1><i class="fas fa-chart-line"></i> Model Performance</h1>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>mAP (0.50)</h3>
+                <div class="metric-value">94.04%</div>
+                <p>Mean Average Precision</p>
+            </div>
+            <div class="metric-card">
+                <h3>F1-Score</h3>
+                <div class="metric-value">0.92</div>
+                <p>Harmonic Mean of Precision & Recall</p>
+            </div>
+            <div class="metric-card">
+                <h3>Model</h3>
+                <div class="metric-value">YOLOv3</div>
+                <p>Darknet-53 Backbone (106 layers)</p>
+            </div>
+        </div>
+
+        <div class="classes-container">
+            <h2>Class-wise Performance</h2>
+            <div class="class-metric">
+                <div class="class-header">
+                    <span><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Mask</span>
+                    <span>96.96% AP</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 96.96%;"></div>
+                </div>
+            </div>
+
+            <div class="class-metric">
+                <div class="class-header">
+                    <span><i class="fas fa-exclamation-triangle" style="color: #f1c40f;"></i> Improperly Masked</span>
+                    <span>92.80% AP</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 92.80%;"></div>
+                </div>
+            </div>
+
+            <div class="class-metric">
+                <div class="class-header">
+                    <span><i class="fas fa-times-circle" style="color: #e74c3c;"></i> No Mask</span>
+                    <span>92.37% AP</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 92.37%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box" style="text-align: left; margin-top: 30px;">
+            <h4><i class="fas fa-info-circle"></i> details</h4>
+            <p>These metrics were calculated on the test dataset containing 678 images.</p>
+            <ul>
+                <li><strong>Precision:</strong> 0.88 (@ conf 0.25)</li>
+                <li><strong>Recall:</strong> 0.95 (@ conf 0.25)</li>
+                <li><strong>Backbone:</strong> Darknet-53</li>
+            </ul>
+        </div>
+
+        <br>
+        <a href="/" class="btn back-btn">
+            <i class="fas fa-arrow-left"></i> Home
+        </a>
+    </div>
+</body>
+
+</html>
