@@ -25,28 +25,46 @@ AI-powered real-time face mask detection system using YOLOv3 with a modern web i
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
-cd anti
+git clone https://github.com/yourusername/MaskSafe.git
+cd MaskSafe
 ```
 
-2. Install dependencies:
+2. Create a virtual environment:
+```bash
+python -m venv .venv
+```
+
+3. Activate the virtual environment:
+   - **Windows:**
+     ```bash
+     .venv\Scripts\activate
+     ```
+   - **Mac/Linux:**
+     ```bash
+     source .venv/bin/activate
+     ```
+
+4. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Download the pre-trained weights:
+5. Download the pre-trained weights:
    - Place `yolov3_mask_last.weights` in the project root
    - Place `darknet53.conv.74` in the project root
 
-4. Run the application:
+## Quick Start
+
+**Windows:** Simply double-click `start.bat`
+
+**Mac/Linux:** Run `./start.sh` (make executable first: `chmod +x start.sh`)
+
+**Manual:**
 ```bash
 python app.py
 ```
 
-5. Open your browser and navigate to:
-```
-http://127.0.0.1:5000
-```
+Then open your browser and navigate to: `http://127.0.0.1:5000`
 
 ## Project Structure
 

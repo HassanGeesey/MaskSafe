@@ -4,10 +4,13 @@ import time
 from flask import Flask, render_template, Response, request, redirect, url_for, send_from_directory, jsonify
 import cv2
 import numpy as np
-from camera import VideoCamera
+from camera import VideoCamera, VideoStream
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
+# Optimization: Use all available CPU cores
+cv2.setNumThreads(os.cpu_count())
 
 # Configuration
 UPLOAD_FOLDER = 'static/uploads'
@@ -19,6 +22,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Initialize camera logic once
 camera_processor = VideoCamera()
+vs = VideoStream().start()
 
 # Global dictionary to store progress: {filename: percentage}
 video_progress = {}
@@ -28,29 +32,23 @@ def allowed_file(filename, extensions):
            filename.rsplit('.', 1)[1].lower() in extensions
 
 def gen_frames():
-    # Use cv2.CAP_DSHOW for Windows to avoid potential backend issues (grey screen/slow load)
-    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    
-    if not cap.isOpened():
-        print("Error: Could not open webcam.")
-        return
-
     while True:
-        success, frame = cap.read()
-        if not success:
-            break
+        frame = vs.read()
+        if frame is None:
+            continue
         
         try:
-            processed_frame = camera_processor.get_frame(frame)
-            ret, buffer = cv2.imencode('.jpg', processed_frame)
-            frame = buffer.tobytes()
+            # We process a copy to avoid drawing on the original stream if multiple clients connect
+            processed_frame = camera_processor.get_frame(frame.copy())
+            
+            # Encode with higher quality (85) for better visual experience
+            ret, buffer = cv2.imencode('.jpg', processed_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
+            frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
         except Exception as e:
             print(f"Error processing frame: {e}")
             break
-            
-    cap.release()
 
 @app.route('/')
 def index():
@@ -175,4 +173,7 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
+

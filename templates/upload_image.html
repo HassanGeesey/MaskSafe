@@ -4,39 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image - Face Mask Detector</title>
+    <title>Image Analysis | MaskSafe</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h1><i class="fas fa-camera"></i> Image Analysis</h1>
+        <div class="header-nav">
+            <a href="/" class="logo-small">Mask<span>Safe</span></a>
+        </div>
+
+        <h2 style="margin-bottom: 24px; font-weight: 600;">Intelligence Analysis</h2>
 
         {% if uploaded_image %}
-        <div class="result-container">
-            <div class="video-container">
-                <img src="{{ url_for('uploaded_file', filename=uploaded_image) }}" alt="Processed Image">
-            </div>
-            <br><br>
-            <a href="/upload_image" class="btn">
-                <i class="fas fa-cloud-upload-alt"></i> Analyze Another
-            </a>
+        <div class="video-wrapper" style="margin-bottom: 30px;">
+            <img src="{{ url_for('uploaded_file', filename=uploaded_image) }}" alt="Analysis Result">
         </div>
+        <a href="/upload_image" class="btn-submit"
+            style="display: block; text-align: center; text-decoration: none; color: #000;">
+            Process New Image
+        </a>
         {% else %}
-        <form method="post" enctype="multipart/form-data" class="upload-form">
-            <div style="width: 100%;">
-                <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
-            </div>
-            <button type="submit" class="btn">
-                <i class="fas fa-search"></i> Process Image
-            </button>
+        <form action="/upload_image" method="post" enctype="multipart/form-data">
+            <label class="upload-zone" for="image-upload">
+                <i class="fas fa-cloud-arrow-up"></i>
+                <h3 style="margin-bottom: 8px;">Upload Image</h3>
+                <p style="margin-bottom: 0; font-size: 0.9rem;">Drop your image here or click to browse</p>
+                <input type="file" name="file" id="image-upload" style="display: none;" onchange="this.form.submit()">
+            </label>
         </form>
         {% endif %}
 
-        <br>
-        <a href="/" class="btn back-btn">
-            <i class="fas fa-arrow-left"></i> Home
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
         </a>
     </div>
 </body>

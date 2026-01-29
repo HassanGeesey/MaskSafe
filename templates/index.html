@@ -4,30 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Mask Detector</title>
+    <title>MaskSafe | AI Safety Monitoring</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Mask Safe</h1>
-        <p style="margin-bottom: 30px; font-size: 1.1rem; opacity: 0.9;">
-            AI-powered real-time safety monitoring system.
-        </p>
+        <h1>MaskSafe</h1>
+        <p class="tagline">Next-Generation AI Real-Time Safety Monitoring</p>
+
         <div class="menu">
             <a href="/live" class="btn">
-                <i class="fas fa-video"></i> Live Camera
+                <i class="fas fa-video"></i>
+                <span>Live Feed</span>
             </a>
             <a href="/upload_image" class="btn">
-                <i class="fas fa-image"></i> Upload Image
+                <i class="fas fa-camera"></i>
+                <span>Image Analysis</span>
             </a>
             <a href="/upload_video" class="btn">
-                <i class="fas fa-film"></i> Upload Video
+                <i class="fas fa-clapperboard"></i>
+                <span>Video Process</span>
             </a>
             <a href="/metrics" class="btn">
-                <i class="fas fa-chart-line"></i> Model Metrics
+                <i class="fas fa-chart-simple"></i>
+                <span>Analytics</span>
             </a>
         </div>
     </div>
